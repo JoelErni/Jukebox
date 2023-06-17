@@ -1,14 +1,9 @@
 import os
 import pymongo
+connection_string = 'mongodb+srv://jukebox:jukebox@cluster0.hehg9fc.mongodb.net/'
+col = pymongo.MongoClient(connection_string)['jukebox']['songs']
 
 class management:
-    connection_string: str
-
-    def __init__(self) -> None: 
-        self.connection_string = os.getenv('JUKE')
-        self.col = pymongo.MongoClient(self.connection_string)['jukebox']['songs']
-
-
     class song(object):
         
         name:str
@@ -36,7 +31,7 @@ class management:
                 self.data = input_data
 
     def get_song(filter = "") -> song:
-        document = management.col.find(filter)[0]
+        document = col.find(filter)[0]
         song = management.song(document['name'], document['filename'], document['interpret'], document['album'], document['genre'], document['releasedate'], document['data'])
         with open(f'import_songs/{song.filename}', 'wb') as song_file:
             song_file.write(song.data)
@@ -44,5 +39,7 @@ class management:
 
 
     def insert_song(song: song):
-        management.col.insert_one(song.__dict__)
+        col.insert_one(song.__dict__)
 
+
+management.get_song({'name': 'lmao'})
