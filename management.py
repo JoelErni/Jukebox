@@ -40,34 +40,8 @@ class management:
     def insert_song(song: song):
         col.insert_one(song.__dict__)
 
-    def delete_song():
-        docs = col.find({}, {'data': 0})
-        count = col.count_documents({})
-        for i in range(count):
-            id = docs[i]['_id']
-            print(f'{i}) id: {id}')
-        try:
-            selected_doc = int(input(f'Select document (0-{count-1}): '))
-        except Exception as e:
-            print(str(e))
-        if selected_doc in list(range(0, count)):
-            col.delete_one({'_id': bson.ObjectId(docs[selected_doc]['_id'])})
-        else:
-            print("no document found")
+    def delete_song(id):
+            col.delete_one({'_id': bson.ObjectId(id)})
 
-    def edit_song(update):
-        docs = col.find({}, {'data': 0})
-        count = col.count_documents({})
-        for i in range(count):
-            id = docs[i]['_id']
-            print(f'{i}) id: {id}')
-        try:
-            selected_doc = int(input(f'Select document (0-{count-1}): '))
-        except Exception as e:
-            print(str(e))
-        if selected_doc in list(range(0, count)):
-            col.update_one({'_id': bson.ObjectId(docs[selected_doc]['_id'])}, {'$set': update})
-        else:
-            print("no document found")
-
-management.delete_song()
+    def edit_song(id, update):
+        col.update_one({'_id': bson.ObjectId(id)}, {'$set': update})
