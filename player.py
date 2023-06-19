@@ -32,6 +32,10 @@ def selectOperation(id):
     op_select = int(input(f'select Operation (0-{len(operations)-1}): '))
     if op_select in list(range(0, len(operations))):
          
+        # Play
+        if op_select == operations.index('play'):
+             management.play_song(id)
+        
         # Edit
         if op_select == operations.index('edit'):
              query = json.loads(input('Data to update as query: '))
@@ -40,6 +44,8 @@ def selectOperation(id):
         # Edit
         if op_select == operations.index('delete'):
              management.delete_song(id)
+
+        # Add to playlist
 
     else:
          print('Input not in range')

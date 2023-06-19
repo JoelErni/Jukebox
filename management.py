@@ -1,3 +1,4 @@
+import playsound
 import bson
 import os
 import pymongo
@@ -24,8 +25,8 @@ class management:
             else:
                 self.data = input_data
 
-    def downlaod_song(filter = "") -> song:
-        document = col.find(filter)[0]
+    def downlaod_song(id) -> song:
+        document = col.find_one({'_id': bson.ObjectId(id)})
         song = management.song(document['name'], document['filename'], document['interpret'], document['album'], document['genre'], document['releasedate'], document['data'])
         if not os.path.exists('/import_songs'):
             os.mkdir('/import_songs')
@@ -45,3 +46,8 @@ class management:
 
     def edit_song(id, update):
         col.update_one({'_id': bson.ObjectId(id)}, {'$set': update})
+
+    def play_song(id):
+        song = management.downlaod_song(id)
+        print(f'now playing {song.name} - {song.interpret}')
+        playsound.playsound(f'import_songs/{song.filename}')
