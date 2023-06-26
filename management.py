@@ -1,5 +1,6 @@
 import playsound
 import bson
+from pprint import pprint
 import os
 import pymongo
 connection_string = 'mongodb+srv://jukebox:jukebox@cluster0.hehg9fc.mongodb.net/'
@@ -51,3 +52,8 @@ class management:
         song = management.downlaod_song(id)
         print(f'now playing {song.name} - {song.interpret}')
         playsound.playsound(f'import_songs/{song.filename}')
+
+    def get_song_info(id):
+        dict = col.find_one({'_id': bson.ObjectId(id)}, {'data': 0})
+        for document in dict: 
+            print(f'{document}: {dict[document]}')
